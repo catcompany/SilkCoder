@@ -5,7 +5,7 @@
 #include <string.h>
 
 #include <QDebug>
-#include <filesystem>
+
 #ifdef _WIN32
 #define _CRT_SECURE_NO_DEPRECATE 1
 #endif
@@ -103,7 +103,7 @@ int Coder::decode() {
     throw -1;
   }
   /* default settings */
-  quiet = 0;
+  quiet = 1;
   loss_prob = 0.0f;
 
   strcpy(bitInFileName, inputPath.toStdString().data());
@@ -426,7 +426,7 @@ int Coder::decode() {
   }
 
   if (!quiet) {
-    printf("\nDecoding Finished \n");
+    qDebug() << "Decoding Finished";
   }
 
   /* Free decoder */
@@ -438,14 +438,9 @@ int Coder::decode() {
 
   filetime = totPackets * 1e-3 * packetSize_ms;
   if (!quiet) {
-    printf("\nFile length:                 %.3f s", filetime);
-    printf("\nTime for decoding:           %.3f s (%.3f%% of realtime)",
-           1e-6 * tottime, 1e-4 * tottime / filetime);
-    printf("\n\n");
-  } else {
-    /* print time and % of realtime */
-    printf("%.3f %.3f %d\n", 1e-6 * tottime, 1e-4 * tottime / filetime,
-           totPackets);
+    qDebug() << "File length: " << filetime << "s";
+    // printf("Time for decoding:           %.3f s (%.3f%% of realtime)", 1e-6 *
+    // tottime, 1e-4 * tottime / filetime);
   }
 
   Mp3Encoder *mp3encoder = new Mp3Encoder;
@@ -454,8 +449,10 @@ int Coder::decode() {
   int bitRate = 196;
   // 初始化解码器，传入源文件路径，生成的文件路径，采样频率，声道数，码率
   mp3encoder->Init(outputPath.toStdString().c_str(),
-                   "/home/imorning/Downloads/test.mp3", sampleRate, channels,
-                   bitRate);
+                   QString(outputPath.left(outputPath.size() - 3).append("mp3"))
+                       .toStdString()
+                       .c_str(),
+                   sampleRate, channels, bitRate);
   // 编码
   mp3encoder->Encode();
   //关闭文件

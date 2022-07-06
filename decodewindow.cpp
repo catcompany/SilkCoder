@@ -9,13 +9,10 @@
 
 #include "SKP_Silk_SDK_API.h"
 #include "coder.h"
+#include "lame.h"
 #include "ui_decodewindow.h"
 
 #ifdef __cplusplus
-
-extern "C" {
-#include "decoder.h"
-}
 
 #endif
 
@@ -37,7 +34,8 @@ void DecodeWindow::on_buttonOpenFile_clicked() {
 }
 
 void DecodeWindow::on_buttonDecode_clicked() {
-  qDebug() << "decoder version: " << SKP_Silk_SDK_get_version();
+  qDebug() << "silk decoder version: " << SKP_Silk_SDK_get_version();
+  qDebug() << "lame version: " << get_lame_version();
   if (sourcePath == nullptr || sourcePath.isEmpty()) {
     return;
   }
@@ -53,5 +51,7 @@ void DecodeWindow::on_buttonDecode_clicked() {
   int result = coder->decode();
   if (result != 0) {
     qDebug() << "error when decode and code is " << result;
+  } else {
+    qDebug() << "decode success!";
   }
 }

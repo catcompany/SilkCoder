@@ -2,7 +2,6 @@
 #define CODER_H
 
 #include <QString>
-#include <filesystem>
 
 /* Define codec specific settings should be moved to h file */
 #define MAX_BYTES_PER_FRAME 1024
