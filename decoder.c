@@ -100,7 +100,6 @@ unsigned long GetHighResolutionTime() /* O: time in usec*/
 /* Seed for the random number generator, which is used for simulating packet loss */
 static SKP_int32 rand_seed = 1;
 
-
 int decode( int argc, char* argv[] )
 {
     unsigned long tottime, starttime;
@@ -123,8 +122,8 @@ int decode( int argc, char* argv[] )
     SKP_float loss_prob;
     SKP_int32 frames, lost, quiet;
     SKP_SILK_SDK_DecControlStruct DecControl;
-
     if( argc < 3 ) {
+        printf("argc is wrong");
         exit(-1);
     }
 

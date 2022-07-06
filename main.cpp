@@ -1,5 +1,6 @@
 #include <QApplication>
 
+#include "coder.h"
 #include "decodewindow.h"
 #include "mainwindow.h"
 

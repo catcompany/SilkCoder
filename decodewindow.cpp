@@ -8,6 +8,7 @@
 #include <QStringList>
 
 #include "SKP_Silk_SDK_API.h"
+#include "coder.h"
 #include "ui_decodewindow.h"
 
 #ifdef __cplusplus
@@ -47,13 +48,9 @@ void DecodeWindow::on_buttonDecode_clicked() {
   }
   dstPath.append("pcm");
   ui->labelOutputPath->setText(dstPath);
-  char* param[4096];
-  //  param[1] = static_cast<char*>("/home/imorning/Downloads/test.slk");
-  //  param[2] = static_cast<char*>("/home/imorning/Downloads/test.pcm");
-  std::string input = sourcePath.toStdString();
-  input.copy(param[1], input.length());
-  param[2] = dstPath.toStdString().data();
-  int result = decode(3, param);
+
+  Coder* coder = new Coder(sourcePath, dstPath);
+  int result = coder->decode();
   if (result != 0) {
     qDebug() << "error when decode and code is " << result;
   }
