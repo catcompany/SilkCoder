@@ -28,26 +28,15 @@ FORMS += \
     decodewindow.ui \
     mainwindow.ui
 
-# For Linux
 INCLUDEPATH += $$PWD/include
 DEPENDPATH += $$PWD/include
 
-unix:!macx: LIBS += -L$$PWD/libs/ -lSKP_SILK_SDK_linux \
-                                  -lmp3lame_linux
-
-unix:!macx: PRE_TARGETDEPS += $$PWD/libs/libSKP_SILK_SDK_linux.a \
-                              $$PWD/libs/libmp3lame_linux.a
+# For Linux
+unix:!macx: LIBS += -L$$PWD/libs/linux/ -lSKP_SILK_SDK_linux -lmp3lame_linux
+unix:!macx: PRE_TARGETDEPS += $$PWD/libs/linux/libSKP_SILK_SDK_linux.a \
+                              $$PWD/libs/linux/libmp3lame_linux.a
 
 #For Windows
-INCLUDEPATH += $$PWD/include
-DEPENDPATH += $$PWD/include
-
-win32: LIBS += -L$$PWD/libs/ -lSKP_SILK_SDK_win
-win32:!win32-g++: PRE_TARGETDEPS += $$PWD/libs/SKP_SILK_SDK_win.lib
-else:win32-g++: PRE_TARGETDEPS += $$PWD/libs/libSKP_SILK_SDK_win.a
-
-
-
-win32: LIBS += -L$$PWD/libs/ -llibmp3lame_win
-win32:!win32-g++: PRE_TARGETDEPS += $$PWD/libs/libmp3lame_win.lib
-else:win32-g++: PRE_TARGETDEPS += $$PWD/libs/libmp3lame_win.lib
+win32: LIBS += -L$$PWD/libs/win/ -lSKP_SILK_SDK -lmp3lame
+win32:!win32-g++: PRE_TARGETDEPS += $$PWD/libs/win/SKP_SILK_SDK.lib $$PWD/libs/win/mp3lame.lib
+else:win32-g++: PRE_TARGETDEPS += $$PWD/libs/win/libSKP_SILK_SDK.a $$PWD/libs/win/libmp3lame.a

@@ -3,7 +3,11 @@
 
 #include <stdio.h>
 
+#ifdef __cplusplus
+extern "C" {
 #include "lame.h"
+}
+#endif
 
 #define QQ_sampleRate 12000
 

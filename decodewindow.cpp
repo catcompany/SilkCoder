@@ -54,4 +54,5 @@ void DecodeWindow::on_buttonDecode_clicked() {
   } else {
     qDebug() << "decode success!";
   }
+  dstPath = "";
 }
