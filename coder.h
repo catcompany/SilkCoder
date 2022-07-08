@@ -1,7 +1,7 @@
 #ifndef CODER_H
 #define CODER_H
 
-#include <QString>
+#include <string>
 
 /* Define codec specific settings should be moved to h file */
 #define MAX_BYTES_PER_FRAME 1024
@@ -13,13 +13,13 @@
 
 class Coder {
  public:
-  Coder(QString &inputPath, QString &outputPath);
-  int encode();
-  int decode();
+  Coder(std::string inputPath, std::string outputPath);
+  std::string encode();
+  std::string decode();
 
  private:
-  QString inputPath;
-  QString outputPath;
+  std::string inputPath;
+  std::string outputPath;
 };
 
 #endif  // CODER_H

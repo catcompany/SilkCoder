@@ -13,28 +13,25 @@ QMAKE_CXXFLAGS += "-w -std=c++17"
 
 SOURCES += \
     coder.cpp \
-    decodewindow.cpp \
     main.cpp \
     mainwindow.cpp \
     mp3encoder.cpp
 
 HEADERS += \
     coder.h \
-    decodewindow.h \
     mainwindow.h \
     mp3encoder.h
 
 FORMS += \
-    decodewindow.ui \
     mainwindow.ui
 
 INCLUDEPATH += $$PWD/include
 DEPENDPATH += $$PWD/include
 
 # For Linux
-unix:!macx: LIBS += -L$$PWD/libs/linux/ -lSKP_SILK_SDK_linux -lmp3lame_linux
-unix:!macx: PRE_TARGETDEPS += $$PWD/libs/linux/libSKP_SILK_SDK_linux.a \
-                              $$PWD/libs/linux/libmp3lame_linux.a
+unix:!macx: LIBS += -L$$PWD/libs/linux/ -lSKP_SILK_SDK -lmp3lame
+unix:!macx: PRE_TARGETDEPS += $$PWD/libs/linux/libSKP_SILK_SDK.a \
+                              $$PWD/libs/linux/libmp3lame.a
 
 #For Windows
 win32: LIBS += -L$$PWD/libs/win/ -lSKP_SILK_SDK -lmp3lame

@@ -2,9 +2,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include <QDebug>
+#include <string>
 
 #ifdef _WIN32
 #define _CRT_SECURE_NO_DEPRECATE 1
@@ -69,15 +69,15 @@ unsigned long GetHighResolutionTime() /* O: time in usec*/
  * loss */
 static SKP_int32 rand_seed = 1;
 
-Coder::Coder(QString &inputPath, QString &outputPath) {
+Coder::Coder(std::string inputPath, std::string outputPath) {
   this->inputPath = inputPath;
   this->outputPath = outputPath;
 }
 
-int Coder::encode() { return 0; }
+std::string Coder::encode() { return ""; }
 
-int Coder::decode() {
-  unsigned long tottime, starttime;
+std::string Coder::decode() {
+  unsigned long starttime;
   double filetime;
   size_t counter;
   SKP_int32 totPackets, i, k;
@@ -99,29 +99,29 @@ int Coder::decode() {
   SKP_float loss_prob;
   SKP_int32 frames, lost, quiet;
   SKP_SILK_SDK_DecControlStruct DecControl;
-  if (inputPath.isEmpty() || outputPath.isEmpty()) {
-    throw -1;
+
+  /* check if path is null */
+  if (inputPath.empty() || outputPath.empty()) {
+    return "input or outpath is null";
   }
   /* default settings */
   quiet = 1;
   loss_prob = 0.0f;
 
-  strcpy(bitInFileName, inputPath.toStdString().data());
-  strcpy(speechOutFileName, outputPath.toStdString().data());
+  strcpy(bitInFileName, inputPath.data());
+  strcpy(speechOutFileName, outputPath.data());
   qDebug() << "input: " << bitInFileName;
   qDebug() << "output: " << speechOutFileName;
 
   /* Open files */
   bitInFile = fopen(bitInFileName, "rb");
   if (bitInFile == NULL) {
-    qDebug() << "Error: could not open input file " << bitInFileName;
-    return -2;
+    return "Error: could not open input file.";
   }
 
   speechOutFile = fopen(speechOutFileName, "wb");
   if (speechOutFile == NULL) {
-    qDebug() << "Error: could not open output file " << speechOutFileName;
-    return -3;
+    return "Error: could not open output file.";
   }
 
   /* Check Silk header */
@@ -135,8 +135,7 @@ int Coder::decode() {
           '\0'; /* Terminate with a null character */
       if (strcmp(header_buf, "!SILK_V3") != 0) {
         /* Non-equal strings */
-        qDebug() << "Error: Wrong Header " << header_buf;
-        return -4;
+        return "Error: Wrong Header.";
       }
     } else {
       counter = fread(header_buf, sizeof(char), strlen("#!SILK_V3"), bitInFile);
@@ -144,8 +143,7 @@ int Coder::decode() {
           '\0'; /* Terminate with a null character */
       if (strcmp(header_buf, "#!SILK_V3") != 0) {
         /* Non-equal strings */
-        qDebug() << "Error: Wrong Header " << header_buf;
-        return -5;
+        return "Error: Wrong Header.";
       }
     }
   }
@@ -175,7 +173,7 @@ int Coder::decode() {
   }
 
   totPackets = 0;
-  tottime = 0;
+  int tottime = 0;
   payloadEnd = payload;
   /* Simulate the jitter buffer holding MAX_FEC_DELAY packets */
   for (i = 0; i < MAX_LBRR_DELAY; i++) {
@@ -308,8 +306,7 @@ int Coder::decode() {
     }
     /* Check if the received totBytes is valid */
     if (totBytes < 0 || totBytes > sizeof(payload)) {
-      fprintf(stderr, "\rPackets decoded:             %d", totPackets);
-      return -1;
+      return "Packets decoded failed.";
     }
     SKP_memmove(payload, &payload[nBytesPerPacket[0]],
                 totBytes * sizeof(SKP_uint8));
@@ -410,8 +407,7 @@ int Coder::decode() {
 
     /* Check if the received totBytes is valid */
     if (totBytes < 0 || totBytes > sizeof(payload)) {
-      fprintf(stderr, "\rPackets decoded:              %d", totPackets);
-      return -1;
+      return "Packets decoded failed.";
     }
 
     SKP_memmove(payload, &payload[nBytesPerPacket[0]],
@@ -423,10 +419,6 @@ int Coder::decode() {
     if (!quiet) {
       fprintf(stderr, "\rPackets decoded:              %d", totPackets);
     }
-  }
-
-  if (!quiet) {
-    qDebug() << "Decoding Finished";
   }
 
   /* Free decoder */
@@ -448,16 +440,16 @@ int Coder::decode() {
   int channels = 2;
   int bitRate = 196;
   // 初始化解码器，传入源文件路径，生成的文件路径，采样频率，声道数，码率
-  mp3encoder->Init(outputPath.toStdString().c_str(),
-                   QString(outputPath.left(outputPath.size() - 3).append("mp3"))
-                       .toStdString()
-                       .c_str(),
-                   sampleRate, channels, bitRate);
+  mp3encoder->Init(
+      outputPath.c_str(),
+      (outputPath.substr(0, outputPath.length() - 3) + "mp3").c_str(),
+      sampleRate, channels, bitRate);
   // 编码
   mp3encoder->Encode();
   //关闭文件
   mp3encoder->Destory();
+
   delete mp3encoder;
 
-  return 0;
+  return "0";
 }
