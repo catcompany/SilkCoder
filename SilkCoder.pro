@@ -28,23 +28,21 @@ FORMS += \
 INCLUDEPATH += $$PWD/include
 DEPENDPATH += $$PWD/include
 
-# For Linux
-unix:!macx{
-    message("using linux")
-    LIBS += -L$$PWD/libs/linux/ -lSKP_SILK_SDK -lmp3lame
-    PRE_TARGETDEPS += $$PWD/libs/linux/libSKP_SILK_SDK.a \
-                      $$PWD/libs/linux/libmp3lame.a
-}
-
 # For Windows
 win32: LIBS += -L$$PWD/libs/win/ -lSKP_SILK_SDK -lmp3lame
 win32:!win32-g++: PRE_TARGETDEPS += $$PWD/libs/win/SKP_SILK_SDK.lib $$PWD/libs/win/mp3lame.lib
 else:win32-g++: PRE_TARGETDEPS += $$PWD/libs/win/libSKP_SILK_SDK.a $$PWD/libs/win/libmp3lame.a
 
-# For Android
 unix:!macx{
-contains(ANDROID_TARGET_ARCH,arm64-v8a) {
-    message("arm64-v8a")
-    LIBS += $$PWD/libs/android/libSKP_SILK_SDK.a $$PWD/libs/android/libmp3lame.a
+    if(contains(ANDROID_TARGET_ARCH,arm64-v8a)) {
+        # For Android
+        message("arm64-v8a")
+        LIBS += $$PWD/libs/android/libSKP_SILK_SDK.a $$PWD/libs/android/libmp3lame.a
+    }else{
+        # For Linux
+        message("using linux")
+        LIBS += -L$$PWD/libs/linux/ -lSKP_SILK_SDK -lmp3lame
+        PRE_TARGETDEPS += $$PWD/libs/linux/libSKP_SILK_SDK.a \
+                          $$PWD/libs/linux/libmp3lame.a
     }
 }
