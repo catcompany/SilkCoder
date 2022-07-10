@@ -23,8 +23,13 @@ MainWindow::MainWindow(QWidget* parent)
 MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::on_buttonOpenFile_clicked() {
+#ifdef __ANDROID__
+
+  return;
+#endif
+
   sourcePath = QFileDialog::getOpenFileName(this, "Choose file",
-                                            QDir::homePath(), "*.slk");
+                                            QDir::homePath(), "*.*");
   if (sourcePath.isEmpty()) {
     return;
   }
@@ -38,7 +43,7 @@ void MainWindow::on_buttonDecode_clicked() {
   }
   QStringList dstArrays = sourcePath.split(".");
   dstArrays.pop_back();
-  for (auto i : dstArrays) {
+  for (auto& i : dstArrays) {
     dstPath.append(i).append(".");
   }
   dstPath.append("pcm");
