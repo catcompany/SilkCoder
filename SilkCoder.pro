@@ -56,14 +56,7 @@ DISTFILES += \
     android/gradlew \
     android/gradlew.bat \
     android/res/values/libs.xml \
-    android/src/org/kde/necessitas/ministro/IMinistro.aidl \
-    android/src/org/kde/necessitas/ministro/IMinistroCallback.aidl \
-    android/src/org/qtproject/qt5/android/bindings/QtActivity.java \
-    android/src/org/qtproject/qt5/android/bindings/QtActivityLoader.java \
-    android/src/org/qtproject/qt5/android/bindings/QtApplication.java \
-    android/src/org/qtproject/qt5/android/bindings/QtLoader.java \
-    android/src/org/qtproject/qt5/android/bindings/QtService.java \
-    android/src/org/qtproject/qt5/android/bindings/QtServiceLoader.java
+
 
 contains(ANDROID_TARGET_ARCH,arm64-v8a) {
     ANDROID_PACKAGE_SOURCE_DIR = \
